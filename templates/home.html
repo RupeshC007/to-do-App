@@ -1,0 +1,127 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>To-Do App</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body class="bg-gradient-to-b from-indigo-100 via-purple-100 to-pink-100 min-h-screen flex items-center justify-center p-4">
+
+  <div class="bg-white/80 backdrop-blur-lg shadow-2xl rounded-2xl p-8 w-full max-w-3xl">
+
+    <!-- Header -->
+   <div>
+     <h1 class="text-3xl font-bold text-center text-gray-800 mb-8">
+      <i class="fa-solid fa-list-check text-indigo-500"></i> My To-Do App
+    </h1>
+   </div>
+
+   <div>
+    <h3><i><strong>My Day</strong></i></h3>
+    <p><i>{% now "jS F Y" %}</i></p>
+   </div>
+
+    <div class="mt-6">
+      <form action="{% url 'addTask' %}"  method="POST" class="flex mb-6">
+        {% csrf_token %}
+        <input
+          type="text"
+          name="task"
+          placeholder="Add a new task..."
+          class="flex-grow p-3 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-indigo-400" required/>
+        <button
+          type="submit"
+          class="bg-indigo-500 text-white px-6 rounded-r-lg hover:bg-indigo-600 transition-colors"
+          title="Add Task"
+        ><i class="fa-solid fa-plus"></i>
+          Add
+        </button>
+        </form>
+    </div>
+
+    <div class="w-full flex flex-row">
+
+      <!-- pending tasks  -->
+      <div class="w-1/2 p-3">
+        <h3><i><strong>Pendig Tasks:</strong></i></h3>
+        {% for task in tasks %}
+         <div class="flex flex-row  w-full mt-2 justify-between content-center bg-white shadow-md rounded-xl p-4  hover:shadow-lg transition">
+          <div class="w-full flex flex-row mb-2 justify-between content-center">
+            <ul >
+              <li class="text-xl font-bold italic ">
+                {{ task.task }}
+              </li>
+            </ul>
+          </div>
+          <div class="flex flex-row ">
+             <a href="{% url 'markComplete' pk=task.pk %}">
+              <button title="Mark as Complete"  class=" text-green-500 hover:bg-green-500 hover:text-white rounded-full p-1 transition flex items-center justify-center" >
+            <i class="fa-solid fa-check"></i>
+            </button>
+             </a>
+            
+             <a href="{% url 'deleteTask' pk=task.pk %}">
+              <button title="Delete Task"
+              class=" text-red-500 hover:bg-red-500 hover:text-white rounded-full p-1 transition flex items-center justify-center  title="Delete Task">
+        <i class="fa-solid fa-trash"></i>
+      </button>
+             </a>
+
+      <!-- Delete -->
+        <button title="Edit Task" 
+                class=" text-blue-500 hover:bg-blue-500 hover:text-white rounded-full p-1 transition flex items-center justify-center  title="Edit Task">
+          <i class="fa-solid fa-pen"></i>
+        </button>
+      
+          </div>
+      </div>
+       {% endfor %}
+      </div>
+
+      <!-- completed tasks -->
+      <div class="w-1/2 p-3" >
+        <h3><i><strong>Completed Task:</strong></i></h3>
+
+        {% for completed_task in completed_tasks %}
+        <div class="flex flex-row  w-full mt-2 justify-between content-center bg-white shadow-md rounded-xl p-4  hover:shadow-lg transition">
+          <div class="w-full flex flex-row mb-2 justify-between content-center ">
+            <ul>
+              <li class="text-xl font-bold italic ">
+                {{ completed_task.task }}
+              </li>
+            </ul>
+          </div>
+          <div class="flex flex-row ">
+             <a href="{% url 'markNotComplete' pk=completed_task.pk %}">
+              <button title="Mark as Undone" class=" text-green-500 hover:bg-green-500 hover:text-white rounded-full p-1 transition flex items-center justify-center ">
+            <i class="fa-solid fa-rotate"></i>
+            </button>
+             </a>
+            
+             <a href="{% url 'deleteTask' pk=completed_task.pk %}">
+              <button title="Delete Task"
+              class=" text-red-500 hover:bg-red-500 hover:text-white rounded-full p-1 transition flex items-center justify-center " >
+        <i class="fa-solid fa-trash"></i>
+      </button>
+             </a>
+
+      
+          </div>
+          
+      </div>
+        {% endfor %}
+
+      </div>
+
+
+    </div>
+
+  </div>
+
+ 
+
+</body>
+</html>
