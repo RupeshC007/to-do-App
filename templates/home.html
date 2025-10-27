@@ -70,11 +70,13 @@
       </button>
              </a>
 
-      <!-- Delete -->
-        <button title="Edit Task" 
+      
+          <a href="{% url 'editTask' pk=task.pk %}">
+              <button title="Edit Task" 
                 class=" text-blue-500 hover:bg-blue-500 hover:text-white rounded-full p-1 transition flex items-center justify-center  title="Edit Task">
           <i class="fa-solid fa-pen"></i>
         </button>
+              </a>
       
           </div>
       </div>
